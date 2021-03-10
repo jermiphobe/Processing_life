@@ -13,10 +13,10 @@ class Square {
   int count_dead = 0;
   int count_every_other = 0;
   
-  int[] orig_color = {255, 166, 201};
-  int[] curr_color = {orig_color[0], orig_color[1], orig_color[2]};
-  int[] target_color = {150, 0, 24};
-  int[] skipped_color = {0, 135, 189};
+  color orig_color = color(255, 166, 201);
+  color curr_color = color(255, 166, 201);
+  color target_color = color(150, 0, 24);
+  color skipped_color = color(0, 135, 189);
   
   Square(int x_spot, int y_spot, int len) {
     x = x_spot;
@@ -39,50 +39,50 @@ class Square {
       //If count_dead = 1, inc count_every_other
       if (count_dead == 1) {
         count_every_other += 1;
-        count_dead = 0;
       } else {
         count_every_other = 0;
       }
       
-      //Set to pink gradient if count_alive
+      count_dead = 0;
+      
+      //Set to pink gradient if count_alive is 2 or more
       if (curr_state == 1 && count_alive > 1) {
-         
-        if (count_alive <= threshold) {
+        
+        //If count alive is less than threshold, find gradient value.  Else get target color
+        if (count_alive < threshold) {
           n = count_alive % threshold;
           n = map(n, 0, threshold, 0, 1);
         } else {
           n = 1;
         }
-        curr_color[0] = (int)lerp(orig_color[0], target_color[0], n);
-        curr_color[1] = (int)lerp(orig_color[1], target_color[1], n);
-        curr_color[2] = (int)lerp(orig_color[2], target_color[2], n);
-      } else {
-        //Set to blue gradient because count alive = 1
-        if (count_every_other <= threshold) {
+        
+        curr_color = lerpColor(orig_color, target_color, n);
+        
+        //Set to blue gradient if alive and count_every_other is 3 or more
+      } else if (curr_state == 1 && count_every_other > 2) {
+        println("Set to blue");
+        if (count_every_other < threshold) {
           n = count_every_other % threshold;
           n = map(n, 0, threshold, 0, 1);
         } else {
           n = 1;
         }
         
-        curr_color[0] = (int)lerp(orig_color[0], skipped_color[0], n);
-        curr_color[1] = (int)lerp(orig_color[1], skipped_color[1], n);
-        curr_color[2] = (int)lerp(orig_color[2], skipped_color[2], n);
+        curr_color = lerpColor(orig_color, skipped_color, n);
     
       }
       
+      //Dead, reset count_alive and increment count_dead.  Reset the color to pink
     } else {
       count_alive = 0;
       count_dead += 1;
       //Reset the color
-      curr_color[0] = orig_color[0];
-      curr_color[1] = orig_color[1];
-      curr_color[2] = orig_color[2];
+      curr_color = color(255, 166, 201);
     }
     
     //Draw the square
     if (curr_state == 1) {
-      fill(curr_color[0], curr_color[1], curr_color[2]);
+      fill(curr_color);
     } else {
       fill(240, 248, 255);
     }
