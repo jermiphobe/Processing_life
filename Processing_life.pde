@@ -9,6 +9,7 @@ ArrayList<ArrayList<Square>> my_squares = new ArrayList<ArrayList<Square>>();
 
 void setup() {
   size(1200, 800);
+  //fullScreen();
   make_squares();
 }
 

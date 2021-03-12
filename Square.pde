@@ -60,7 +60,6 @@ class Square {
         
         //Set to blue gradient if alive and count_every_other is 3 or more
       } else if (curr_state == 1 && count_every_other > 2) {
-        println("Set to blue");
         if (count_every_other < threshold) {
           n = count_every_other % threshold;
           n = map(n, 0, threshold, 0, 1);
